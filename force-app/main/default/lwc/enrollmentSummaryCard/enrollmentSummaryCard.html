@@ -1,0 +1,133 @@
+<template>
+    <lightning-card title="Enrollment Summary — Review & Confirm" icon-name="standard:care_program_enrollee">
+
+        <!-- Patient Demographics -->
+        <div class="slds-section slds-is-open slds-m-around_medium">
+            <h3 class="slds-section__title">
+                <span class="slds-text-heading_small slds-text-color_brand">Patient Demographics</span>
+            </h3>
+            <div class="slds-section__content slds-p-around_small">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Patient Name</p>
+                        <p class="slds-text-body_regular">{patientFullName}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Date of Birth</p>
+                        <p class="slds-text-body_regular">{patientData.dateOfBirth}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Gender</p>
+                        <p class="slds-text-body_regular">{patientData.gender}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Address</p>
+                        <p class="slds-text-body_regular">{patientAddress}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Phone</p>
+                        <p class="slds-text-body_regular">{patientData.mobilePhone}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">Email</p>
+                        <p class="slds-text-body_regular">{patientData.email}</p>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+
+        <!-- Insurance -->
+        <template lwc:if={primaryInsurance}>
+            <div class="slds-section slds-is-open slds-m-around_medium">
+                <h3 class="slds-section__title">
+                    <span class="slds-text-heading_small slds-text-color_brand">Primary Insurance</span>
+                </h3>
+                <div class="slds-section__content slds-p-around_small">
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Payer</p>
+                            <p class="slds-text-body_regular">{primaryInsurance.payerName}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Plan / Group</p>
+                            <p class="slds-text-body_regular">{primaryInsurance.planId} / {primaryInsurance.groupNumber}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Member ID</p>
+                            <p class="slds-text-body_regular">{primaryInsurance.memberId}</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+
+        <!-- Prescriber -->
+        <template lwc:if={prescriberData}>
+            <div class="slds-section slds-is-open slds-m-around_medium">
+                <h3 class="slds-section__title">
+                    <span class="slds-text-heading_small slds-text-color_brand">Prescriber</span>
+                </h3>
+                <div class="slds-section__content slds-p-around_small">
+                    <lightning-layout>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Prescriber</p>
+                            <p class="slds-text-body_regular">{prescriberData.name}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">NPI</p>
+                            <p class="slds-text-body_regular">{prescriberData.npi}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Practice</p>
+                            <p class="slds-text-body_regular">{prescriberData.practiceName}</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+
+        <!-- Consents -->
+        <div class="slds-section slds-is-open slds-m-around_medium">
+            <h3 class="slds-section__title">
+                <span class="slds-text-heading_small slds-text-color_brand">Consents & Authorizations</span>
+            </h3>
+            <div class="slds-section__content slds-p-around_small">
+                <template for:each={grantedConsents} for:item="consent">
+                    <lightning-badge key={consent.consentType} label={consent.consentType}
+                        class="slds-m-right_x-small slds-m-bottom_x-small"
+                        icon-name="utility:check">
+                    </lightning-badge>
+                </template>
+            </div>
+        </div>
+
+        <!-- Therapy -->
+        <template lwc:if={hasTherapy}>
+            <div class="slds-section slds-is-open slds-m-around_medium">
+                <h3 class="slds-section__title">
+                    <span class="slds-text-heading_small slds-text-color_brand">Therapy / Medication</span>
+                </h3>
+                <div class="slds-section__content slds-p-around_small">
+                    <lightning-layout>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Product</p>
+                            <p class="slds-text-body_regular">{therapyData.productName}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Dose / Route</p>
+                            <p class="slds-text-body_regular">{therapyData.dose} {therapyData.route}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">Frequency</p>
+                            <p class="slds-text-body_regular">{therapyData.frequency}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">ICD-10</p>
+                            <p class="slds-text-body_regular">{therapyData.icd10Code}</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
