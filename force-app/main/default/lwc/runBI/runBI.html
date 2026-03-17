@@ -1,0 +1,198 @@
+<template>
+    <!-- Loading Spinner -->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    <!-- Eligibility Check Failed -->
+    <template if:true={showError}>
+        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+            <span class="slds-assistive-text">error</span>
+            <h2>{errorMessage}</h2>
+        </div>
+    </template>
+
+    <!-- View Existing BI (Read-Only Mode) -->
+    <template if:true={showViewMode}>
+        <lightning-card title="Benefits Investigation (Completed)" icon-name="standard:task2">
+            <div class="slds-p-around_medium">
+                <lightning-record-view-form record-id={existingBIId} object-api-name="Benefits_Investigation__c">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="BI_Outcome__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="Coverage_Determination__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="Status__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="PA_Required__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="BI_Initiated_Date__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-output-field field-name="BI_Completed_Date__c"></lightning-output-field>
+                        </div>
+                    </div>
+                </lightning-record-view-form>
+            </div>
+        </lightning-card>
+    </template>
+
+    <!-- BI Entry Form -->
+    <template if:true={showForm}>
+        <lightning-card title="Benefits Investigation" icon-name="standard:task2">
+            <!-- Enrollee Summary Header -->
+            <div class="slds-p-around_medium slds-box slds-theme_shade">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">Enrollee Information</h2>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-3">
+                        <p class="slds-text-body_small slds-text-color_weak">Name</p>
+                        <p class="slds-text-body_regular">{enrolleeData.enrolleeName}</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <p class="slds-text-body_small slds-text-color_weak">Phone</p>
+                        <p class="slds-text-body_regular">{enrolleeData.phone}</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <p class="slds-text-body_small slds-text-color_weak">Status</p>
+                        <p class="slds-text-body_regular">{enrolleeData.status}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-p-around_medium">
+                <!-- Payer Contact Section -->
+                <h3 class="slds-text-heading_small slds-m-top_medium slds-m-bottom_small">Payer Contact Information</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Payer Rep Name" value={biRecord.Payer_Rep_Name__c}
+                            onchange={handleFieldChange} data-field="Payer_Rep_Name__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Payer Phone" type="tel" value={biRecord.Payer_Phone__c}
+                            onchange={handleFieldChange} data-field="Payer_Phone__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Reference / Call ID" value={biRecord.Reference_Call_ID__c}
+                            onchange={handleFieldChange} data-field="Reference_Call_ID__c"></lightning-input>
+                    </div>
+                </div>
+
+                <!-- Benefit Details Section -->
+                <h3 class="slds-text-heading_small slds-m-top_large slds-m-bottom_small">Benefit Details</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="Coverage Determination" value={biRecord.Coverage_Determination__c}
+                            options={coverageDeterminationOptions} onchange={handleFieldChange}
+                            data-field="Coverage_Determination__c" required></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="Benefit Type" value={biRecord.Benefit_Type__c}
+                            options={benefitTypeOptions} onchange={handleFieldChange}
+                            data-field="Benefit_Type__c"></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="Network Status" value={biRecord.Network_Status__c}
+                            options={networkStatusOptions} onchange={handleFieldChange}
+                            data-field="Network_Status__c"></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="BI Outcome" value={biRecord.BI_Outcome__c}
+                            options={biOutcomeOptions} onchange={handleFieldChange}
+                            data-field="BI_Outcome__c" required></lightning-combobox>
+                    </div>
+                </div>
+
+                <!-- Financial Details Section -->
+                <h3 class="slds-text-heading_small slds-m-top_large slds-m-bottom_small">Financial Details</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Deductible (Individual)" type="number" formatter="currency"
+                            step="0.01" value={biRecord.Deductible_Individual__c}
+                            onchange={handleFieldChange} data-field="Deductible_Individual__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Deductible (Family)" type="number" formatter="currency"
+                            step="0.01" value={biRecord.Deductible_Family__c}
+                            onchange={handleFieldChange} data-field="Deductible_Family__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Out-of-Pocket Max (Individual)" type="number" formatter="currency"
+                            step="0.01" value={biRecord.OOP_Max_Individual__c}
+                            onchange={handleFieldChange} data-field="OOP_Max_Individual__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Out-of-Pocket Max (Family)" type="number" formatter="currency"
+                            step="0.01" value={biRecord.OOP_Max_Family__c}
+                            onchange={handleFieldChange} data-field="OOP_Max_Family__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Copay Amount" type="number" formatter="currency"
+                            step="0.01" value={biRecord.Copay_Amount__c}
+                            onchange={handleFieldChange} data-field="Copay_Amount__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Coinsurance %" type="number" step="0.01"
+                            value={biRecord.Coinsurance_Pct__c}
+                            onchange={handleFieldChange} data-field="Coinsurance_Pct__c"></lightning-input>
+                    </div>
+                </div>
+
+                <!-- Prior Authorization Section -->
+                <h3 class="slds-text-heading_small slds-m-top_large slds-m-bottom_small">Prior Authorization</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="PA Required" type="checkbox" checked={biRecord.PA_Required__c}
+                            onchange={handleCheckboxChange} data-field="PA_Required__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="PA Phone" type="tel" value={biRecord.PA_Phone__c}
+                            onchange={handleFieldChange} data-field="PA_Phone__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="PA Portal URL" type="url" value={biRecord.PA_Portal_URL__c}
+                            onchange={handleFieldChange} data-field="PA_Portal_URL__c"></lightning-input>
+                    </div>
+                </div>
+
+                <!-- Specialty Pharmacy Section -->
+                <h3 class="slds-text-heading_small slds-m-top_large slds-m-bottom_small">Specialty Pharmacy</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="Mandatory Specialty Pharmacy" type="checkbox"
+                            checked={biRecord.Specialty_Pharmacy_Required__c}
+                            onchange={handleCheckboxChange}
+                            data-field="Specialty_Pharmacy_Required__c"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-input label="SP Name" value={biRecord.SP_Name__c}
+                            onchange={handleFieldChange} data-field="SP_Name__c"></lightning-input>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <h3 class="slds-text-heading_small slds-m-top_large slds-m-bottom_small">Additional Notes</h3>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+                        <lightning-textarea label="Notes" value={biRecord.Additional_Notes__c}
+                            onchange={handleFieldChange} data-field="Additional_Notes__c"
+                            max-length="32768"></lightning-textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="slds-m-top_large slds-clearfix">
+                    <div class="slds-float_right">
+                        <lightning-button label="Save as Draft" onclick={handleSaveDraft}
+                            class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Submit BI" variant="brand" onclick={handleSubmit}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+</template>

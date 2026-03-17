@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payer_Phone__c</fullName>
+    <label>Payer Phone</label>
+    <type>Phone</type>
+    <required>false</required>
+    <externalId>false</externalId>
+    <description>Payer contact phone number</description>
+</CustomField>

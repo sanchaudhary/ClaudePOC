@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Additional_Notes__c</fullName>
+    <label>Additional Notes</label>
+    <type>LongTextArea</type>
+    <length>32768</length>
+    <visibleLines>5</visibleLines>
+    <required>false</required>
+    <externalId>false</externalId>
+    <description>Free-text field for Case Manager annotations</description>
+</CustomField>

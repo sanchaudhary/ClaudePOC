@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OOP_Max_Individual__c</fullName>
+    <label>Out-of-Pocket Max (Individual)</label>
+    <type>Currency</type>
+    <precision>18</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <externalId>false</externalId>
+    <description>Individual out-of-pocket maximum</description>
+</CustomField>

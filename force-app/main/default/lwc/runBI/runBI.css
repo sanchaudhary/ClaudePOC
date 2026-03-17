@@ -1,0 +1,13 @@
+:host {
+    display: block;
+}
+
+.slds-box {
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    border-bottom: 1px solid #d8dde6;
+    padding-bottom: 0.5rem;
+}
