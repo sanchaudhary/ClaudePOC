@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BI_Outcome__c</fullName>
+    <label>BI Outcome</label>
+    <type>Picklist</type>
+    <required>false</required>
+    <externalId>false</externalId>
+    <trackHistory>true</trackHistory>
+    <description>Outcome of the Benefits Investigation</description>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Covered - No PA Required</fullName><default>false</default><label>Covered - No PA Required</label></value>
+            <value><fullName>Covered - PA Required</fullName><default>false</default><label>Covered - PA Required</label></value>
+            <value><fullName>Not Covered - Appeal Recommended</fullName><default>false</default><label>Not Covered - Appeal Recommended</label></value>
+            <value><fullName>Not Covered - Alternative Therapy</fullName><default>false</default><label>Not Covered - Alternative Therapy</label></value>
+            <value><fullName>Coverage Exception Pending</fullName><default>false</default><label>Coverage Exception Pending</label></value>
+            <value><fullName>Unable to Verify - Retry Required</fullName><default>false</default><label>Unable to Verify - Retry Required</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
