@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Surveyed_By__c</fullName>
+    <description>The user who conducted the survey.</description>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Surveyed By</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>CSAT_Surveys_Conducted</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
