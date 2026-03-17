@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Date__c</fullName>
+    <description>Date the survey was conducted.</description>
+    <defaultValue>TODAY()</defaultValue>
+    <externalId>false</externalId>
+    <label>Survey Date</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
