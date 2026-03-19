@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <description>CSAT Phone Survey — SCRUM-24. Quick Action flow for capturing post-call patient satisfaction surveys from Account records.</description>
+    <environments>Default</environments>
+    <interviewLabel>CSAT Phone Survey {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CSAT Phone Survey</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <runInMode>DefaultMode</runInMode>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <choices><name>choiceVerySatisfied</name><choiceText>Very Satisfied</choiceText><dataType>String</dataType><value><stringValue>Very Satisfied</stringValue></value></choices>
+    <choices><name>choiceSatisfied</name><choiceText>Satisfied</choiceText><dataType>String</dataType><value><stringValue>Satisfied</stringValue></value></choices>
+    <choices><name>choiceNeutral</name><choiceText>Neutral</choiceText><dataType>String</dataType><value><stringValue>Neutral</stringValue></value></choices>
+    <choices><name>choiceDissatisfied</name><choiceText>Dissatisfied</choiceText><dataType>String</dataType><value><stringValue>Dissatisfied</stringValue></value></choices>
+    <choices><name>choiceVeryDissatisfied</name><choiceText>Very Dissatisfied</choiceText><dataType>String</dataType><value><stringValue>Very Dissatisfied</stringValue></value></choices>
+    <choices><name>choiceExcellent</name><choiceText>Excellent</choiceText><dataType>String</dataType><value><stringValue>Excellent</stringValue></value></choices>
+    <choices><name>choiceGood</name><choiceText>Good</choiceText><dataType>String</dataType><value><stringValue>Good</stringValue></value></choices>
+    <choices><name>choiceAverage</name><choiceText>Average</choiceText><dataType>String</dataType><value><stringValue>Average</stringValue></value></choices>
+    <choices><name>choicePoor</name><choiceText>Poor</choiceText><dataType>String</dataType><value><stringValue>Poor</stringValue></value></choices>
+    <choices><name>choiceFullyResolved</name><choiceText>Fully Resolved</choiceText><dataType>String</dataType><value><stringValue>Fully Resolved</stringValue></value></choices>
+    <choices><name>choicePartiallyResolved</name><choiceText>Partially Resolved</choiceText><dataType>String</dataType><value><stringValue>Partially Resolved</stringValue></value></choices>
+    <choices><name>choiceNotResolved</name><choiceText>Not Resolved</choiceText><dataType>String</dataType><value><stringValue>Not Resolved</stringValue></value></choices>
+    <choices><name>choiceEnrollment</name><choiceText>Enrollment</choiceText><dataType>String</dataType><value><stringValue>Enrollment</stringValue></value></choices>
+    <choices><name>choiceBenefits</name><choiceText>Benefits</choiceText><dataType>String</dataType><value><stringValue>Benefits</stringValue></value></choices>
+    <choices><name>choiceRefill</name><choiceText>Refill</choiceText><dataType>String</dataType><value><stringValue>Refill</stringValue></value></choices>
+    <choices><name>choiceBilling</name><choiceText>Billing</choiceText><dataType>String</dataType><value><stringValue>Billing</stringValue></value></choices>
+    <choices><name>choiceGeneralInquiry</name><choiceText>General Inquiry</choiceText><dataType>String</dataType><value><stringValue>General Inquiry</stringValue></value></choices>
+    <choices><name>choiceOther</name><choiceText>Other</choiceText><dataType>String</dataType><value><stringValue>Other</stringValue></value></choices>
+    <choices><name>choicePriorityUrgent</name><choiceText>Urgent</choiceText><dataType>String</dataType><value><stringValue>Urgent</stringValue></value></choices>
+    <choices><name>choicePriorityNormal</name><choiceText>Normal</choiceText><dataType>String</dataType><value><stringValue>Normal</stringValue></value></choices>
+    <choices><name>choicePriorityLow</name><choiceText>Low</choiceText><dataType>String</dataType><value><stringValue>Low</stringValue></value></choices>
+    <actionCalls>
+        <name>CallCreateSurveyApex</name>
+        <label>Create Survey via Apex</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <actionName>CSATSurveyService</actionName>
+        <actionType>apex</actionType>
+        <connector><targetReference>ConfirmationScreen</targetReference></connector>
+        <faultConnector><targetReference>LogSurveyError</targetReference></faultConnector>
+        <inputParameters><name>accountId</name><value><elementReference>recordId</elementReference></value></inputParameters>
+        <inputParameters><name>overallSatisfaction</name><value><elementReference>inpOverallSatisfaction</elementReference></value></inputParameters>
+        <inputParameters><name>agentHelpfulness</name><value><elementReference>inpAgentHelpfulness</elementReference></value></inputParameters>
+        <inputParameters><name>issueResolution</name><value><elementReference>inpIssueResolution</elementReference></value></inputParameters>
+        <inputParameters><name>npsScore</name><value><elementReference>inpNPS</elementReference></value></inputParameters>
+        <inputParameters><name>callReason</name><value><elementReference>inpCallReason</elementReference></value></inputParameters>
+        <inputParameters><name>comments</name><value><elementReference>inpComments</elementReference></value></inputParameters>
+        <inputParameters><name>surveyDate</name><value><elementReference>$Flow.CurrentDate</elementReference></value></inputParameters>
+        <inputParameters><name>surveyedBy</name><value><elementReference>$User.Id</elementReference></value></inputParameters>
+        <inputParameters><name>status</name><value><stringValue>Completed</stringValue></value></inputParameters>
+        <inputParameters><name>priority</name><value><elementReference>inpPriority</elementReference></value></inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>LogSurveyError</name>
+        <label>Log Survey Error</label>
+        <locationX>396</locationX>
+        <locationY>242</locationY>
+        <actionName>ErrorLogger</actionName>
+        <actionType>apex</actionType>
+        <connector><targetReference>ErrorScreen</targetReference></connector>
+        <inputParameters><name>flowName</name><value><stringValue>CSAT_Phone_Survey</stringValue></value></inputParameters>
+        <inputParameters><name>faultElement</name><value><stringValue>CallCreateSurveyApex</stringValue></value></inputParameters>
+        <inputParameters><name>faultMessage</name><value><elementReference>$Flow.FaultMessage</elementReference></value></inputParameters>
+    </actionCalls>
+    <screens>
+        <name>SurveyScreen</name>
+        <label>CSAT Phone Survey</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector><targetReference>CallCreateSurveyApex</targetReference></connector>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+        <fields><name>hdrSurvey</name><fieldType>DisplayText</fieldType><fieldText>&lt;p&gt;&lt;b&gt;&lt;span style="font-size: 16px;"&gt;Post-Call CSAT Survey&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please capture the patient&apos;s verbal feedback before ending the call.&lt;/p&gt;</fieldText></fields>
+        <fields><name>inpCallReason</name><dataType>String</dataType><fieldText>Call Reason</fieldText><fieldType>DropdownBox</fieldType><isRequired>true</isRequired><choiceReferences>choiceEnrollment</choiceReferences><choiceReferences>choiceBenefits</choiceReferences><choiceReferences>choiceRefill</choiceReferences><choiceReferences>choiceBilling</choiceReferences><choiceReferences>choiceGeneralInquiry</choiceReferences><choiceReferences>choiceOther</choiceReferences></fields>
+        <fields><name>inpOverallSatisfaction</name><dataType>String</dataType><fieldText>Overall Satisfaction</fieldText><fieldType>RadioButtons</fieldType><isRequired>true</isRequired><choiceReferences>choiceVerySatisfied</choiceReferences><choiceReferences>choiceSatisfied</choiceReferences><choiceReferences>choiceNeutral</choiceReferences><choiceReferences>choiceDissatisfied</choiceReferences><choiceReferences>choiceVeryDissatisfied</choiceReferences></fields>
+        <fields><name>inpAgentHelpfulness</name><dataType>String</dataType><fieldText>Agent Helpfulness</fieldText><fieldType>RadioButtons</fieldType><isRequired>true</isRequired><choiceReferences>choiceExcellent</choiceReferences><choiceReferences>choiceGood</choiceReferences><choiceReferences>choiceAverage</choiceReferences><choiceReferences>choicePoor</choiceReferences></fields>
+        <fields><name>inpIssueResolution</name><dataType>String</dataType><fieldText>Issue Resolution</fieldText><fieldType>RadioButtons</fieldType><isRequired>true</isRequired><choiceReferences>choiceFullyResolved</choiceReferences><choiceReferences>choicePartiallyResolved</choiceReferences><choiceReferences>choiceNotResolved</choiceReferences></fields>
+        <fields><name>inpNPS</name><dataType>Number</dataType><fieldText>NPS Score (0-10): How likely are you to recommend our services?</fieldText><fieldType>InputField</fieldType><isRequired>true</isRequired><scale>0</scale></fields>
+        <fields><name>inpComments</name><dataType>String</dataType><fieldText>Additional Comments</fieldText><fieldType>LargeTextArea</fieldType><isRequired>false</isRequired></fields>
+        <fields>
+            <name>inpPriority</name>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>choicePriorityNormal</defaultSelectedChoiceReference>
+            <fieldText>Follow-Up Priority</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+            <choiceReferences>choicePriorityUrgent</choiceReferences>
+            <choiceReferences>choicePriorityNormal</choiceReferences>
+            <choiceReferences>choicePriorityLow</choiceReferences>
+        </fields>
+    </screens>
+    <screens>
+        <name>ConfirmationScreen</name>
+        <label>Survey Submitted</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+        <fields><name>hdrConfirm</name><fieldType>DisplayText</fieldType><fieldText>&lt;p&gt;&lt;b&gt;&lt;span style="font-size: 16px; color: green;"&gt;Survey Submitted Successfully!&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The CSAT survey has been recorded. Thank you for capturing the patient&apos;s feedback.&lt;/p&gt;</fieldText></fields>
+    </screens>
+    <screens>
+        <name>ErrorScreen</name>
+        <label>Survey Submission Error</label>
+        <locationX>396</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+        <fields><name>hdrError</name><fieldType>DisplayText</fieldType><fieldText>&lt;p&gt;&lt;b&gt;&lt;span style="font-size: 16px; color: red;"&gt;Survey Could Not Be Saved&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;An error occurred while saving the survey. The issue has been logged and your administrator has been notified. Please try again or contact your system administrator if the problem persists.&lt;/p&gt;&lt;p&gt;&lt;i&gt;Error details: {!$Flow.FaultMessage}&lt;/i&gt;&lt;/p&gt;</fieldText></fields>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector><targetReference>SurveyScreen</targetReference></connector>
+    </start>
+</Flow>
