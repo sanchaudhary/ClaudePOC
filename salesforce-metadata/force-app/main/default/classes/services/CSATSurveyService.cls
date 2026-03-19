@@ -86,12 +86,9 @@ public with sharing class CSATSurveyService {
                     accountNpsMap.get(s.Account__c).add(s.NPS_Score__c);
                 }
             }
-            // Metrics available for reporting — no Account field update needed for MVP
 
         } catch (Exception e) {
             ErrorLogger.log(CLASS_NAME, 'calculateAccountCSATMetrics', e);
-            // Don't re-throw — metrics calculation is non-critical after-insert logic.
-            // Logging the error is sufficient; we don't want to roll back the survey insert.
         }
     }
 
@@ -144,73 +141,5 @@ public with sharing class CSATSurveyService {
             ErrorLogger.log(CLASS_NAME, 'createSurveys', e);
             throw e;
         }
-    }
-
-    // ─── Flow Invocable ──────────────────────────────────────────────────────
-
-    /**
-     * @description Invocable method for Flow — creates a CSAT Survey using
-     *              Security.stripInaccessible(CREATABLE) to bypass FLS issues
-     *              that occur when a Flow Record Create element sets fields
-     *              the running user lacks explicit FLS grants for.
-     *              Replaces the Flow's native Record Create element.
-     * @ticket SCRUM-26
-     * @param requests List of FlowSurveyInput — one per survey to create.
-     */
-    @InvocableMethod(
-        label='Create CSAT Survey'
-        description='Creates a CSAT_Survey__c record via the service layer with FLS enforcement. Use instead of a Flow Record Create element. SCRUM-26.'
-    )
-    public static void createSurveyFromFlow(List<FlowSurveyInput> requests) {
-        try {
-            List<CSAT_Survey__c> surveys = new List<CSAT_Survey__c>();
-            for (FlowSurveyInput req : requests) {
-                CSAT_Survey__c s = new CSAT_Survey__c(
-                    Account__c             = req.accountId,
-                    Overall_Satisfaction__c = req.overallSatisfaction,
-                    Agent_Helpfulness__c   = req.agentHelpfulness,
-                    Issue_Resolution__c    = req.issueResolution,
-                    NPS_Score__c           = req.npsScore,
-                    Call_Reason__c         = req.callReason,
-                    Survey_Date__c         = Date.today(),
-                    Status__c              = 'Completed',
-                    Surveyed_By__c         = UserInfo.getUserId()
-                );
-                if (String.isNotBlank(req.comments)) {
-                    s.Comments__c = req.comments;
-                }
-                surveys.add(s);
-            }
-            createSurveys(surveys);
-        } catch (Exception e) {
-            ErrorLogger.log(CLASS_NAME, 'createSurveyFromFlow', e);
-            throw e;
-        }
-    }
-
-    /**
-     * @description Input class for createSurveyFromFlow @InvocableMethod.
-     */
-    public class FlowSurveyInput {
-        @InvocableVariable(required=true  label='Account ID')
-        public String accountId;
-
-        @InvocableVariable(required=true  label='Overall Satisfaction')
-        public String overallSatisfaction;
-
-        @InvocableVariable(required=true  label='Agent Helpfulness')
-        public String agentHelpfulness;
-
-        @InvocableVariable(required=true  label='Issue Resolution')
-        public String issueResolution;
-
-        @InvocableVariable(required=true  label='NPS Score')
-        public Decimal npsScore;
-
-        @InvocableVariable(required=true  label='Call Reason')
-        public String callReason;
-
-        @InvocableVariable(required=false label='Comments')
-        public String comments;
     }
 }
