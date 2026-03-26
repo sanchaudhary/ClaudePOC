@@ -1,0 +1,30 @@
+<template>
+    <div class="bi-wizard-root">
+        <!-- WIZARD HEADER -->
+        <div class="slds-page-header slds-page-header_record-home bi-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container">
+                                <lightning-icon icon-name="standard:solution" size="medium"></lightning-icon>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1><span class="slds-page-header__title">Benefit Investigation Wizard</span></h1>
+                                </div>
+                                <p class="slds-page-header__name-meta">Care Program Enrollee · SCRUM-39</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <lightning-button label="Load Test Data" icon-name="utility:upload" variant="neutral" onclick={handleLoadTestData} disabled={isLoading}></lightning-button>
+                </div>
+            </div>
+        </div>
+        <!-- See full file in repository -->
+    </div>
+</template>

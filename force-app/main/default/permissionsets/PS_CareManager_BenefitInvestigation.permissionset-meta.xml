@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants Care Managers full access to Benefit Investigation records. SCRUM-39.</description>
+    <label>PS Care Manager Benefit Investigation</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>true</allowEdit>
+        <allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords>
+        <object>Benefit_Investigation__c</object><viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+</PermissionSet>
