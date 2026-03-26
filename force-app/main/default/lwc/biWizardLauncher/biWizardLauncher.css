@@ -1,0 +1,9 @@
+.bi-launch-banner { display: flex; flex-direction: column; align-items: center; padding: 1rem 0; }
+.bi-launch-icon { color: #0176d3; }
+.bi-modal { z-index: 9001; }
+.bi-modal-header { background: linear-gradient(135deg, #032d60 0%, #0176d3 100%); color: #fff; padding: 1rem 1.5rem; border-radius: 4px 4px 0 0; }
+.bi-modal-subtitle { color: rgba(255,255,255,0.75); font-size: 0.78rem; margin-top: 2px; }
+.bi-close-btn { color: #fff !important; opacity: 0.85; flex-shrink: 0; }
+.bi-close-btn:hover { opacity: 1; background: rgba(255,255,255,0.15) !important; border-radius: 50%; }
+.bi-modal-body { padding: 0; overflow-y: auto; max-height: 72vh; }
+.bi-modal-footer { background: #f3f3f3; border-top: 1px solid #dddbda; display: flex; justify-content: flex-end; padding: 0.75rem 1.5rem; }
