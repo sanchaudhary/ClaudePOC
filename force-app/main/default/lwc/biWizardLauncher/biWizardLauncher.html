@@ -1,0 +1,45 @@
+<template>
+
+    <!-- Launch Button -->
+    <lightning-card>
+        <div class="slds-p-around_medium slds-text-align_center">
+            <div class="bi-launch-banner">
+                <lightning-icon icon-name="standard:solution" size="large" class="slds-m-bottom_small bi-launch-icon"></lightning-icon>
+                <h2 class="slds-text-heading_small slds-m-bottom_x-small">Benefit Investigation</h2>
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Run coverage investigations with CoverMyMeds and Experian Health vendors.</p>
+                <lightning-button label="Run Benefit Investigation" variant="brand" icon-name="utility:play" onclick={openModal}></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+
+    <!-- Modal -->
+    <template lwc:if={isModalOpen}>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="bi-modal-title"
+            class="slds-modal slds-fade-in-open slds-modal_large bi-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header bi-modal-header">
+                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <lightning-icon icon-name="standard:solution" size="small" class="slds-m-right_small"></lightning-icon>
+                            <div>
+                                <h2 id="bi-modal-title" class="slds-modal__title">Benefit Investigation Wizard</h2>
+                                <p class="slds-text-body_small bi-modal-subtitle">Care Program Enrollee &nbsp;·&nbsp; SCRUM-39</p>
+                            </div>
+                        </div>
+                        <button class="slds-button slds-button_icon slds-modal__close bi-close-btn" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" size="small" alternative-text="Close wizard"></lightning-icon>
+                        </button>
+                    </div>
+                </header>
+                <div class="slds-modal__content bi-modal-body">
+                    <c-benefit-investigation-wizard record-id={recordId} onbicomplete={handleWizardComplete} onbiclose={closeModal}></c-benefit-investigation-wizard>
+                </div>
+                <footer class="slds-modal__footer bi-modal-footer">
+                    <lightning-button label="Cancel &amp; Close" variant="neutral" icon-name="utility:close" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+    </template>
+
+</template>

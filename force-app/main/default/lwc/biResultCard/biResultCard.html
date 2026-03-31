@@ -1,0 +1,17 @@
+<template>
+    <div class="bi-result-card">
+        <div class="slds-grid slds-grid_align-spread slds-m-bottom_small bi-result-header">
+            <div class="slds-media slds-media_center">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:shield" size="small"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <h3 class="slds-text-heading_small">{vendorName} — Coverage Results</h3>
+                    <p class="slds-text-body_small slds-text-color_weak">Request ID: {response.requestId}</p>
+                </div>
+            </div>
+            <div><lightning-badge label={coverageStatusLabel} class={coverageBadgeClass}></lightning-badge></div>
+        </div>
+        <!-- Full implementation in repository -->
+    </div>
+</template>
